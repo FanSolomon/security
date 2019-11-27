@@ -11,6 +11,8 @@
   <url>http://maven.apache.org</url>
 
   <properties>
+  	<zyt.security.version>1.0.0-SNAPSHOT</zyt.security.version>
+  	
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
   </properties>
 
@@ -25,6 +27,7 @@
   
   <dependencyManagement>
 		<dependencies>
+			<!-- 管理maven依赖的版本 -->
 			<dependency>
 				<groupId>io.spring.platform</groupId>
 				<artifactId>platform-bom</artifactId>
@@ -32,6 +35,7 @@
 				<type>pom</type>
 				<scope>import</scope>
 			</dependency>
+			<!-- spring cloud的依赖，M1版本为里程碑版本 这里使用GA（正式的发布版本）的版本 -->
 			<dependency>
 				<groupId>org.springframework.cloud</groupId>
 				<artifactId>spring-cloud-dependencies</artifactId>
@@ -44,6 +48,7 @@
 	
 	<build>
 		<plugins>
+			<!-- 设置编译的版本  -->
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
