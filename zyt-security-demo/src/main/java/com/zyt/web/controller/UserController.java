@@ -78,12 +78,13 @@ public class UserController {
 	@GetMapping(value = "/{id:\\d+}")
 	public User getInfo(@PathVariable String id) {
 		
-		throw new UserNotExistException(id);
+//		throw new UserNotExistException(id);
+//		throw new RuntimeException("user not exist");
+		System.out.println("进入getInfo服务");
+		System.out.println("id: " + id);
 		
-//		System.out.println("id: " + id);
-//		
-//		User user = new User();
-//		user.setUsername("tom");
-//		return user;
+		User user = new User();
+		user.setUsername("tom");
+		return user;
 	}
 }
