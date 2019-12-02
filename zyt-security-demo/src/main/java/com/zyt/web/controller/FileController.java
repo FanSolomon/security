@@ -46,6 +46,9 @@ public class FileController {
 		//将接收到的文件 写入本地的文件
 		file.transferTo(localFile);
 		
+		//文件内容是否为空
+		System.out.println("file.isEmpty()---"+file.isEmpty());
+		
 		return new FileInfo(localFile.getAbsolutePath());
 	}
 	

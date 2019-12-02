@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.web.servlet.config.annotation.AsyncSupportConfigurer;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 
@@ -26,15 +27,22 @@ public class WebConfig extends WebMvcConfigurerAdapter {
 	@Autowired
 	private Timeinterceptor timeinterceptor;
 	
-	//配置拦截器
+	//配置拦截器 (异步情况使用)
+//	@Override
+//	public void configureAsyncSupport(AsyncSupportConfigurer configurer) {
+//		configurer.registerCallableInterceptors(interceptors)
+//		super.configureAsyncSupport(configurer);
+//	}
+
+	//配置拦截器 (同步情况使用)
 	@Override
 	public void addInterceptors(InterceptorRegistry registry) {
-		registry.addInterceptor(timeinterceptor);
-		super.addInterceptors(registry);
+//		registry.addInterceptor(timeinterceptor);
+//		super.addInterceptors(registry);
 	}
 
 	//在应用的第三方filter时，第三方没有@Component，则可用这种方式配置filter
-	@Bean
+//	@Bean
 	public FilterRegistrationBean timeFilter() {
 		//相当于在web.xml文件中去配置filter标签
 		FilterRegistrationBean registrationBean = new FilterRegistrationBean();

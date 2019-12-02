@@ -20,7 +20,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.zyt.dto.User;
-import com.zyt.exception.UserNotExistException;
 
 /**
  * @author Colin

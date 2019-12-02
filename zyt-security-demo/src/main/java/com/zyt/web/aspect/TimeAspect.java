@@ -14,8 +14,8 @@ import org.springframework.stereotype.Component;
  * @author Colin
  *
  */
-@Aspect
-@Component
+//@Aspect
+//@Component
 public class TimeAspect {
 
 	//pjp对象包含当前拦截方法的信息
