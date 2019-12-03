@@ -22,14 +22,14 @@ public class MockServer {
 	 * @param args
 	 * @throws IOException 
 	 */
-	public static void main(String[] args) throws IOException{
-		//指定端口号
-		configureFor(8066);
-		//清空以前的配置
-		removeAllMappings();
-		
-		mock("/order/1", "01");
-	}
+//	public static void main(String[] args) throws IOException{
+//		//指定端口号
+//		configureFor(8066);
+//		//清空以前的配置
+//		removeAllMappings();
+//		
+//		mock("/order/1", "01");
+//	}
 
 	private static void mock(String url, String file) throws IOException {
 		ClassPathResource resource = new ClassPathResource("mock/respons/" + file + ".txt");
