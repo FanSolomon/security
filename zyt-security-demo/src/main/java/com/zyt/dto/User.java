@@ -11,6 +11,7 @@ import org.hibernate.validator.constraints.NotBlank;
 
 import com.zyt.validator.MyConstraint;
 
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 /**
@@ -28,6 +29,7 @@ public class User {
 	@NotBlank(message = "密码不能为空")
 	private String password;
 	
+	@ApiModelProperty(value = "生日")
 	@Past
 	private Date birthday;
 }

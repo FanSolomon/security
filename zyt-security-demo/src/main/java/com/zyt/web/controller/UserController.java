@@ -21,6 +21,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.zyt.dto.User;
 
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
+
 /**
  * @author Colin
  *
@@ -30,6 +33,7 @@ import com.zyt.dto.User;
 public class UserController {
 	
 	@PostMapping
+	@ApiOperation(value = "新增用户")
 	public User create(@RequestBody @Validated User user, BindingResult errors) {
 		
 		if (errors.hasErrors()) {
@@ -75,7 +79,7 @@ public class UserController {
 	
 	//利用正则表达式 限制id只能为数字
 	@GetMapping(value = "/{id:\\d+}")
-	public User getInfo(@PathVariable String id) {
+	public User getInfo(@ApiParam(value = "用户id") @PathVariable String id) {
 		
 //		throw new UserNotExistException(id);
 //		throw new RuntimeException("user not exist");
