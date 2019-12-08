@@ -1,0 +1,5 @@
+{"properties": [{
+  "name": "zyt.security.browser.loginPage",
+  "type": "java.lang.String",
+  "description": "A description for 'zyt.security.browser.loginPage'"
+}]}
