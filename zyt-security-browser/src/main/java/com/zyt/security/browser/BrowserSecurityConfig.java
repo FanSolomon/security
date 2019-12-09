@@ -10,6 +10,8 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.authentication.AuthenticationFailureHandler;
+import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 
 import com.zyt.security.core.properties.SecurityProperties;
 
@@ -23,6 +25,12 @@ public class BrowserSecurityConfig extends WebSecurityConfigurerAdapter {
 	
 	@Autowired
 	private SecurityProperties securityProperties;
+	
+	@Autowired
+	private AuthenticationSuccessHandler myAuthenticationSuccessHandler;
+	
+	@Autowired
+	private AuthenticationFailureHandler myAuthenticationFailureHandler;
 	
 	@Bean
 	public PasswordEncoder passwordEncoder() {
@@ -39,6 +47,10 @@ public class BrowserSecurityConfig extends WebSecurityConfigurerAdapter {
 			.loginPage("/authentication/require")
 			//设置登录路径
 			.loginProcessingUrl("/authentication/form")
+			//指定自定义的成功登录后处理方式
+			.successHandler(myAuthenticationSuccessHandler)
+			//指定自定义的失败登录后处理方式
+			.failureHandler(myAuthenticationFailureHandler)
 //		http.httpBasic()
 			.and()
 			.authorizeRequests()

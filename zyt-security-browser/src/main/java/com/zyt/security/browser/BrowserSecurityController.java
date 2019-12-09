@@ -56,12 +56,12 @@ public class BrowserSecurityController {
 		if (null != savedRequest) {
 			String targetUrl = savedRequest.getRedirectUrl();
 			log.info("当前的请求：{}", targetUrl);
-			if (StringUtils.endsWithIgnoreCase(targetUrl, ".html")) {
+//			if (StringUtils.endsWithIgnoreCase(targetUrl, ".html")) {
 				String pageUrl = securityProperties.getBrowser().getLoginPage();
 				log.info("------getLoginPage is: {}", pageUrl);
 				log.info("request.getContextPath() is: {}",request.getContextPath());
 				redirectStrategy.sendRedirect(request, response, pageUrl);
-			}
+//			}
 		}
 		return new SimpleResponse("访问的服务需要身份认证");
 	}
