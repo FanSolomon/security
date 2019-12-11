@@ -12,8 +12,11 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import com.zyt.security.core.properties.SecurityProperties;
+import com.zyt.security.core.validate.code.ValidateCodeFilter;
+import com.zyt.security.core.validate.code.ValidateCodeSecurityConfig;
 
 /**
  * @author Colin
@@ -32,6 +35,9 @@ public class BrowserSecurityConfig extends WebSecurityConfigurerAdapter {
 	@Autowired
 	private AuthenticationFailureHandler myAuthenticationFailureHandler;
 	
+	@Autowired
+	private ValidateCodeSecurityConfig validateCodeSecurityConfig;
+	
 	@Bean
 	public PasswordEncoder passwordEncoder() {
 		//加密方法，可以用自己的加密方法（实现encode matches方法）
@@ -41,8 +47,17 @@ public class BrowserSecurityConfig extends WebSecurityConfigurerAdapter {
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 		
-		//身份认证：表单登录 任何请求都需要身份认证
-		http.formLogin()
+//		ValidateCodeFilter validateCodeFilter = new ValidateCodeFilter();
+//		validateCodeFilter.setAuthenticationFailureHandler(myAuthenticationFailureHandler);
+//		validateCodeFilter.setSecurityProperties(securityProperties);
+//		validateCodeFilter.afterPropertiesSet();
+		
+		http
+			.apply(validateCodeSecurityConfig).and()
+			//将validateCodeFilter加在UsernamePasswordAuthenticationFilter之前
+//			.addFilterBefore(validateCodeFilter, UsernamePasswordAuthenticationFilter.class)
+			//身份认证：表单登录 任何请求都需要身份认证
+			.formLogin()
 			//设置自定义的登录页面路径
 			.loginPage("/authentication/require")
 			//设置登录路径
@@ -55,7 +70,9 @@ public class BrowserSecurityConfig extends WebSecurityConfigurerAdapter {
 			.and()
 			.authorizeRequests()
 			//signIn.html页面不进行拦截
-			.antMatchers("/authentication/require", securityProperties.getBrowser().getLoginPage()).permitAll()
+			.antMatchers("/authentication/require", 
+					securityProperties.getBrowser().getLoginPage(), 
+					"/code/image").permitAll()
 			.anyRequest()
 			.authenticated()
 			//暂时关闭csrf 跨站请求伪造防护功能
