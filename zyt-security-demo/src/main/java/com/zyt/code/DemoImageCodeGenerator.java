@@ -13,7 +13,7 @@ import com.zyt.security.core.validate.code.ValidateCodeGenerator;
  * @author Colin
  *
  */
-@Component("imageValidateCodeGenerator")
+//@Component("imageValidateCodeGenerator")
 public class DemoImageCodeGenerator implements ValidateCodeGenerator {
 
 	@Override
