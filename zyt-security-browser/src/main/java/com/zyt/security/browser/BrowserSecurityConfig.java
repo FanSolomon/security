@@ -99,7 +99,7 @@ public class BrowserSecurityConfig extends WebSecurityConfigurerAdapter {
 			//signIn.html页面不进行拦截
 			.antMatchers("/authentication/require", 
 					securityProperties.getBrowser().getLoginPage(), 
-					"/code/image").permitAll()
+					"/code/*").permitAll()
 			.anyRequest()
 			.authenticated()
 			//暂时关闭csrf 跨站请求伪造防护功能

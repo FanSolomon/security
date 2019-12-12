@@ -11,6 +11,8 @@ import org.springframework.stereotype.Component;
 
 import com.zyt.security.core.properties.SecurityProperties;
 import com.zyt.security.core.validate.code.image.ImageCodeGenerator;
+import com.zyt.security.core.validate.code.sms.DefaultSmsCodeSender;
+import com.zyt.security.core.validate.code.sms.SmsCodeSender;
 
 /**
  * @author Colin
@@ -34,9 +36,13 @@ public class ValidateCodeBeanConfig {
 		return codeGenerator;
 	}
 	
-//	@Bean
-//	@ConditionalOnMissingBean(SmsCodeSender.class)
-//	public SmsCodeSender smsCodeSender() {
-//		return new DefaultSmsCodeSender();
-//	}
+	/**
+	 * (SmsCodeSender.class)与上面name = 形式的效果一样
+	 * @return
+	 */
+	@Bean
+	@ConditionalOnMissingBean(SmsCodeSender.class)
+	public SmsCodeSender smsCodeSender() {
+		return new DefaultSmsCodeSender();
+	}
 }
