@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.zyt.security.browser.support.SimpleResponse;
+import com.zyt.security.core.properties.SecurityConstants;
 import com.zyt.security.core.properties.SecurityProperties;
 
 import lombok.extern.slf4j.Slf4j;
@@ -48,7 +49,7 @@ public class BrowserSecurityController {
 	 * @return
 	 * @throws IOException 
 	 */
-	@RequestMapping("/authentication/require")
+	@RequestMapping(SecurityConstants.DEFAULT_UNAUTHENTICATION_URL)
 	@ResponseStatus(code = HttpStatus.UNAUTHORIZED)
 	public SimpleResponse requireAuthentication(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		
@@ -56,12 +57,12 @@ public class BrowserSecurityController {
 		if (null != savedRequest) {
 			String targetUrl = savedRequest.getRedirectUrl();
 			log.info("当前的请求：{}", targetUrl);
-//			if (StringUtils.endsWithIgnoreCase(targetUrl, ".html")) {
+			if (StringUtils.endsWithIgnoreCase(targetUrl, ".html")) {
 				String pageUrl = securityProperties.getBrowser().getLoginPage();
 				log.info("------getLoginPage is: {}", pageUrl);
 				log.info("request.getContextPath() is: {}",request.getContextPath());
 				redirectStrategy.sendRedirect(request, response, pageUrl);
-//			}
+			}
 		}
 		return new SimpleResponse("访问的服务需要身份认证");
 	}

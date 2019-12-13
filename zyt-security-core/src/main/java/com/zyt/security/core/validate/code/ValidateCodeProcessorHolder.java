@@ -16,7 +16,7 @@ import org.springframework.stereotype.Component;
 public class ValidateCodeProcessorHolder {
 
 	/**
-	 * 收集系统中所有ValidateCodeProcessor接口的实现
+	 * 收集系统中所有{@link ValidateCodeProcessor}接口的实现
 	 * 依赖查找！
 	 * spring在启动的时候，会查找spring容器中所有的ValidateCodeProcessor实现
 	 * 然后将相应的been以been的名字作为Map的key。

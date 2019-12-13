@@ -40,7 +40,7 @@ public abstract class AbstractValidateCodeProcessor<C extends ValidateCode> impl
 	 * (non-Javadoc)
 	 * 
 	 * @see
-	 * com.imooc.security.core.validate.code.ValidateCodeProcessor#create(org.
+	 * com.zyt.security.core.validate.code.ValidateCodeProcessor#create(org.
 	 * springframework.web.context.request.ServletWebRequest)
 	 */
 	@Override

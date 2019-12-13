@@ -25,13 +25,13 @@ import org.springframework.web.filter.OncePerRequestFilter;
 import com.zyt.security.core.properties.SecurityConstants;
 import com.zyt.security.core.properties.SecurityProperties;
 
-import lombok.Data;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * @author Colin
  *  实现InitializingBean接口，为了初始化urlMap的值
  */
-@Data
+@Slf4j
 @Component("validateCodeFilter")
 public class ValidateCodeFilter extends OncePerRequestFilter implements InitializingBean {
 	
@@ -81,6 +81,7 @@ public class ValidateCodeFilter extends OncePerRequestFilter implements Initiali
 	 */
 	protected void addUrlToMap(String urlString, ValidateCodeType type) {
 		if (StringUtils.isNotBlank(urlString)) {
+			log.info("-------需要校验的URL：{}", urlString);
 			String[] urls = StringUtils.splitByWholeSeparatorPreserveAllTokens(urlString, ",");
 			for (String url : urls) {
 				urlMap.put(url, type);

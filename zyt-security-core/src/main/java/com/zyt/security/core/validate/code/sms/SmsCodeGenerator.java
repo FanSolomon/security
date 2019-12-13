@@ -29,7 +29,7 @@ public class SmsCodeGenerator implements ValidateCodeGenerator {
 	 * (non-Javadoc)
 	 * 
 	 * @see
-	 * com.imooc.security.core.validate.code.ValidateCodeGenerator#generate(org.
+	 * com.zyt.security.core.validate.code.ValidateCodeGenerator#generate(org.
 	 * springframework.web.context.request.ServletWebRequest)
 	 */
 	@Override

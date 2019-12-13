@@ -9,18 +9,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.web.authentication.AuthenticationFailureHandler;
-import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
-import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.authentication.rememberme.JdbcTokenRepositoryImpl;
 import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
 
+import com.zyt.security.core.authentication.AbstractChannelSecurityConfig;
+import com.zyt.security.core.authentication.mobile.SmsCodeAuthenticationSecurityConfig;
+import com.zyt.security.core.properties.SecurityConstants;
 import com.zyt.security.core.properties.SecurityProperties;
-import com.zyt.security.core.validate.code.ValidateCodeFilter;
 import com.zyt.security.core.validate.code.ValidateCodeSecurityConfig;
 
 /**
@@ -29,16 +27,10 @@ import com.zyt.security.core.validate.code.ValidateCodeSecurityConfig;
  */
 //web应用安全配置的适配器
 @Configuration
-public class BrowserSecurityConfig extends WebSecurityConfigurerAdapter {
+public class BrowserSecurityConfig extends AbstractChannelSecurityConfig {
 	
 	@Autowired
 	private SecurityProperties securityProperties;
-	
-	@Autowired
-	private AuthenticationSuccessHandler myAuthenticationSuccessHandler;
-	
-	@Autowired
-	private AuthenticationFailureHandler myAuthenticationFailureHandler;
 	
 	@Autowired
 	private ValidateCodeSecurityConfig validateCodeSecurityConfig;
@@ -48,6 +40,9 @@ public class BrowserSecurityConfig extends WebSecurityConfigurerAdapter {
 	
 	@Autowired
 	private UserDetailsService userDetailsService;
+	
+	@Autowired
+	private SmsCodeAuthenticationSecurityConfig smsCodeAuthenticationSecurityConfig;
 	
 	@Bean
 	public PasswordEncoder passwordEncoder() {
@@ -74,12 +69,17 @@ public class BrowserSecurityConfig extends WebSecurityConfigurerAdapter {
 //		validateCodeFilter.setSecurityProperties(securityProperties);
 //		validateCodeFilter.afterPropertiesSet();
 		
+		applyPasswordAuthenticationConfig(http);
+		
 		http
-			.apply(validateCodeSecurityConfig).and()
+			.apply(validateCodeSecurityConfig)
+				.and()
+			.apply(smsCodeAuthenticationSecurityConfig)
+				.and()
 			//将validateCodeFilter加在UsernamePasswordAuthenticationFilter之前
 //			.addFilterBefore(validateCodeFilter, UsernamePasswordAuthenticationFilter.class)
 			//身份认证：表单登录 任何请求都需要身份认证
-			.formLogin()
+			/*.formLogin()
 				//设置自定义的登录页面路径
 				.loginPage("/authentication/require")
 				//设置登录路径
@@ -88,7 +88,7 @@ public class BrowserSecurityConfig extends WebSecurityConfigurerAdapter {
 				.successHandler(myAuthenticationSuccessHandler)
 				//指定自定义的失败登录后处理方式
 				.failureHandler(myAuthenticationFailureHandler)
-				.and()
+				.and()*/
 			.rememberMe()
 				.tokenRepository(persistentTokenRepository())
 				.tokenValiditySeconds(securityProperties.getBrowser().getRememberMeSeconds())
@@ -97,9 +97,10 @@ public class BrowserSecurityConfig extends WebSecurityConfigurerAdapter {
 			.and()
 			.authorizeRequests()
 			//signIn.html页面不进行拦截
-			.antMatchers("/authentication/require", 
-					securityProperties.getBrowser().getLoginPage(), 
-					"/code/*").permitAll()
+			.antMatchers(SecurityConstants.DEFAULT_UNAUTHENTICATION_URL,
+					SecurityConstants.DEFAULT_LOGIN_PROCESSING_URL_MOBILE,
+					securityProperties.getBrowser().getLoginPage(),
+					SecurityConstants.DEFAULT_VALIDATE_CODE_URL_PREFIX+"/*").permitAll()
 			.anyRequest()
 			.authenticated()
 			//暂时关闭csrf 跨站请求伪造防护功能
